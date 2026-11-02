@@ -26,30 +26,58 @@
         <!-- Main Content Area -->
         <main class="p-4 flex-1 overflow-y-auto">
             
-            <!-- Auth View (Login / Signup) -->
+            <!-- Auth View -->
             <section id="auth-view" class="space-y-4 py-8">
                 <div class="text-center space-y-2">
-                    <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
-                    <p class="text-sm text-slate-500">Sign in with your phone number to manage your meals.</p>
+                    <h2 class="text-2xl font-bold text-slate-800">Hostel Portal Login</h2>
+                    <p class="text-sm text-slate-500">Sign in to manage your daily meals and balance.</p>
                 </div>
-                
+
+                <!-- Google Sign-In Button -->
                 <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name (For Signup)</label>
-                        <input type="text" id="auth-name" placeholder="Rahim Uddin" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Phone Number</label>
-                        <input type="text" id="auth-phone" placeholder="01700000000" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
-                        <input type="password" id="auth-pass" placeholder="••••••••" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
+                    <button id="google-login-btn" class="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2.5 px-4 border border-slate-300 rounded-lg shadow-sm transition">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.3 7.31 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.7 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
                     
-                    <div class="pt-2 flex gap-2">
-                        <button id="login-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-semibold transition">Log In</button>
-                        <button id="signup-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg text-sm font-semibold transition">Sign Up</button>
+                    <div class="relative flex py-1 items-center">
+                        <div class="flex-grow border-t border-slate-200"></div>
+                        <span class="flex-shrink mx-3 text-xs text-slate-400 font-medium">OR PHONE OTP</span>
+                        <div class="flex-grow border-t border-slate-200"></div>
+                    </div>
+
+                    <!-- Step 1: Request Phone OTP Form -->
+                    <div id="step-phone-form" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name (For Signup)</label>
+                            <input type="text" id="auth-name" placeholder="Rahim Uddin" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Phone Number</label>
+                            <input type="text" id="auth-phone" placeholder="+8801700000000" class="w-full px-3 py-2 border rounded-lg text-sm bg-white outline-none">
+                        </div>
+                        <button id="send-otp-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-semibold transition">
+                            Send OTP Code
+                        </button>
+                    </div>
+
+                    <!-- Step 2: Verify Phone OTP Form -->
+                    <div id="step-otp-form" class="hidden space-y-3">
+                        <p class="text-xs text-slate-600 text-center">Code sent to <span id="display-phone" class="font-bold"></span></p>
+                        <div>
+                            <input type="text" id="otp-input" placeholder="123456" maxlength="6" class="w-full px-3 py-2 border rounded-lg text-center tracking-widest text-lg font-bold bg-white outline-none">
+                        </div>
+                        <button id="verify-otp-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-sm font-semibold transition">
+                            Verify & Login
+                        </button>
+                        <button id="back-to-phone-btn" class="w-full text-xs text-slate-500 hover:underline text-center pt-1">
+                            Back to options
+                        </button>
                     </div>
                 </div>
             </section>
@@ -67,7 +95,6 @@
                             <h3 class="font-bold text-lg" id="student-welcome-name">Student Portal</h3>
                             <p class="text-xs text-slate-300">Daily Unit: 40 BDT & 3 Rice Pots</p>
                         </div>
-                        <!-- Large ON/OFF Toggle Button -->
                         <button id="toggle-meal-btn" class="px-5 py-2.5 rounded-xl font-bold text-sm shadow transition bg-emerald-600 hover:bg-emerald-500 text-white">
                             Meal ON
                         </button>
@@ -131,7 +158,6 @@
 
     <!-- JavaScript Connection & Logic -->
     <script>
-        // Configured Credentials
         const SUPABASE_URL = 'https://pftlwtzduycvcfndldyj.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmdGx3dHpkdXljdmNmbmRsZHlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2Mjg2OTksImV4cCI6MjEwOTIwNDY5OX0.XNPUFhhzGZNWgPFALfUWh7r7A2ye0ncdDIsWEldYS7A';
 
@@ -139,12 +165,15 @@
 
         let currentUser = null;
         let currentProfile = null;
+        let activePhone = '';
 
         const authView = document.getElementById('auth-view');
         const studentDashboard = document.getElementById('student-dashboard');
         const managerDashboard = document.getElementById('manager-dashboard');
         const userRoleBadge = document.getElementById('user-role-badge');
         const logoutBtn = document.getElementById('logout-btn');
+        const stepPhoneForm = document.getElementById('step-phone-form');
+        const stepOtpForm = document.getElementById('step-otp-form');
 
         async function initSession() {
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -178,6 +207,8 @@
             studentDashboard.classList.add('hidden');
             managerDashboard.classList.add('hidden');
             logoutBtn.classList.add('hidden');
+            stepPhoneForm.classList.remove('hidden');
+            stepOtpForm.classList.add('hidden');
             userRoleBadge.textContent = 'Please Log In';
         }
 
@@ -198,8 +229,75 @@
             }
         }
 
+        // Google Sign In Handler
+        document.getElementById('google-login-btn').addEventListener('click', async () => {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) {
+                alert("Google Sign-In failed: " + error.message);
+            }
+        });
+
+        // Phone OTP Handler
+        document.getElementById('send-otp-btn').addEventListener('click', async () => {
+            const fullName = document.getElementById('auth-name').value.trim();
+            activePhone = document.getElementById('auth-phone').value.trim();
+
+            if (!activePhone) {
+                alert("Please enter a valid phone number.");
+                return;
+            }
+
+            const { error } = await supabaseClient.auth.signInWithOtp({
+                phone: activePhone,
+                options: {
+                    data: { full_name: fullName || 'Hostel Member' }
+                }
+            });
+
+            if (error) {
+                alert("Failed to send OTP: " + error.message);
+            } else {
+                alert("OTP sent successfully!");
+                document.getElementById('display-phone').textContent = activePhone;
+                stepPhoneForm.classList.add('hidden');
+                stepOtpForm.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('verify-otp-btn').addEventListener('click', async () => {
+            const token = document.getElementById('otp-input').value.trim();
+
+            if (!token || token.length < 6) {
+                alert("Please enter the 6-digit verification code.");
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+                phone: activePhone,
+                token: token,
+                type: 'sms'
+            });
+
+            if (error) {
+                alert("Verification failed: " + error.message);
+            } else {
+                currentUser = data.user;
+                await loadUserProfile();
+            }
+        });
+
+        document.getElementById('back-to-phone-btn').addEventListener('click', () => {
+            stepOtpForm.classList.add('hidden');
+            stepPhoneForm.classList.remove('hidden');
+        });
+
         function updateStudentUI() {
-            document.getElementById('student-welcome-name').textContent = currentProfile.full_name;
+            document.getElementById('student-welcome-name').textContent = currentProfile.full_name || 'Student Portal';
             
             const moneyEl = document.getElementById('money-balance-display');
             moneyEl.textContent = currentProfile.money_balance + ' BDT';
@@ -285,7 +383,7 @@
                 html += `
                     <div class="py-2 flex justify-between items-center">
                         <div>
-                            <p class="font-bold text-slate-800">${s.full_name} <span class="text-[10px] text-slate-400">(${s.phone_number})</span></p>
+                            <p class="font-bold text-slate-800">${s.full_name || 'Student'} <span class="text-[10px] text-slate-400">(${s.phone_number || s.email || 'N/A'})</span></p>
                             <p class="text-[11px] text-slate-500">Money: <span class="${s.money_balance < 0 ? 'text-red-600 font-bold' : ''}">${s.money_balance} BDT</span> | Rice: ${s.rice_balance} Pots</p>
                         </div>
                         <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.meal_status ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">
@@ -312,58 +410,6 @@
             } else {
                 alert("🔒 Bazar locked! Daily deductions applied.");
                 loadManagerData();
-            }
-        });
-
-        document.getElementById('signup-btn').addEventListener('click', async () => {
-            const fullName = document.getElementById('auth-name').value.trim();
-            const phone = document.getElementById('auth-phone').value.trim();
-            const password = document.getElementById('auth-pass').value;
-
-            if (!fullName || !phone || !password) {
-                alert("Please fill in all fields for signup.");
-                return;
-            }
-
-            const email = `${phone.replace(/[^0-9]/g, '')}@hostelmeal.sys`;
-
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: { full_name: fullName, phone_number: phone }
-                }
-            });
-
-            if (error) {
-                alert("Signup failed: " + error.message);
-            } else {
-                alert("Account created successfully!");
-                initSession();
-            }
-        });
-
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            const phone = document.getElementById('auth-phone').value.trim();
-            const password = document.getElementById('auth-pass').value;
-
-            if (!phone || !password) {
-                alert("Please enter phone number and password.");
-                return;
-            }
-
-            const email = `${phone.replace(/[^0-9]/g, '')}@hostelmeal.sys`;
-
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                alert("Login failed: " + error.message);
-            } else {
-                currentUser = data.user;
-                await loadUserProfile();
             }
         });
 
