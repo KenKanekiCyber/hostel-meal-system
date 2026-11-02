@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Meal Management System</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JavaScript Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-50 font-sans min-h-screen text-slate-900">
+
+    <!-- App Container -->
+    <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-xl flex flex-col justify-between">
+        
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="font-bold text-lg">Hostel Meal System</h1>
+                <p class="text-xs text-indigo-200" id="user-role-badge">Loading session...</p>
+            </div>
+            <button id="logout-btn" class="hidden text-xs bg-indigo-700 hover:bg-indigo-800 px-3 py-1.5 rounded font-medium transition">Logout</button>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="p-4 flex-1 overflow-y-auto">
+            
+            <!-- Auth View (Login / Signup) -->
+            <section id="auth-view" class="space-y-4 py-8">
+                <div class="text-center space-y-2">
+                    <h2 class="text-2xl font-bold text-slate-800">Welcome Back</h2>
+                    <p class="text-sm text-slate-500">Sign in with your phone number to manage your meals.</p>
+                </div>
+                
+                <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Full Name (For Signup)</label>
+                        <input type="text" id="auth-name" placeholder="Rahim Uddin" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Phone Number</label>
+                        <input type="text" id="auth-phone" placeholder="01700000000" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                        <input type="password" id="auth-pass" placeholder="••••••••" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    
+                    <div class="pt-2 flex gap-2">
+                        <button id="login-btn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-semibold transition">Log In</button>
+                        <button id="signup-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-lg text-sm font-semibold transition">Sign Up</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Student Dashboard View -->
+            <section id="student-dashboard" class="hidden space-y-6">
+                <!-- Global Meal Switch Card -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-lg space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Global Meal Status</span>
+                        <span id="meal-status-pill" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400">Running</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2">
+                        <div>
+                            <h3 class="font-bold text-lg" id="student-welcome-name">Student Portal</h3>
+                            <p class="text-xs text-slate-300">Daily Unit: 40 BDT & 3 Rice Pots</p>
+                        </div>
+                        <!-- Large ON/OFF Toggle Button -->
+                        <button id="toggle-meal-btn" class="px-5 py-2.5 rounded-xl font-bold text-sm shadow transition bg-emerald-600 hover:bg-emerald-500 text-white">
+                            Meal ON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Balances Grid -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                        <span class="text-xs font-medium text-slate-500">Meal Money Balance</span>
+                        <div class="text-xl font-extrabold text-slate-800" id="money-balance-display">0 BDT</div>
+                        <p class="text-[10px] text-amber-600 font-medium" id="money-warning">Negative balances allowed</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-1">
+                        <span class="text-xs font-medium text-slate-500">Rice Pot Balance</span>
+                        <div class="text-xl font-extrabold text-slate-800" id="rice-balance-display">0 Pots</div>
+                        <p class="text-[10px] text-slate-400">Consumption tracked</p>
+                    </div>
+                </div>
+
+                <!-- Guest Meal Section -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h4 class="font-bold text-sm text-slate-700">Add Guest Meal</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="guest-name-input" placeholder="Guest Name" class="flex-1 px-3 py-1.5 border rounded-lg text-sm bg-white outline-none">
+                        <input type="number" id="guest-units-input" value="1" min="1" max="5" class="w-16 px-3 py-1.5 border rounded-lg text-sm bg-white outline-none text-center">
+                        <button id="add-guest-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg text-sm font-semibold">Add</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manager Dashboard View -->
+            <section id="manager-dashboard" class="hidden space-y-6">
+                <div class="bg-indigo-900 text-white p-5 rounded-2xl shadow-lg space-y-3">
+                    <span class="text-xs uppercase tracking-wider text-indigo-300 font-bold">Administrative Control</span>
+                    <h3 class="font-bold text-lg">Meal Manager Dashboard</h3>
+                    <p class="text-xs text-indigo-200">Manage hostel students, daily balances, and bazar lock batches.</p>
+                    <div class="pt-2">
+                        <button id="lock-bazar-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-bold text-sm shadow transition">
+                            🔒 Lock Today's Bazar & Apply Daily Deductions
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h4 class="font-bold text-sm text-slate-700">Registered Hostel Students</h4>
+                    <div id="manager-students-list" class="space-y-2 text-xs">
+                        <p class="text-slate-400 italic">Loading student records...</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer / Status Bar -->
+        <footer class="p-3 bg-slate-100 text-center text-xs text-slate-400 border-t border-slate-200">
+            Hostel Meal Management System &bull; 100% Free Tier
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Connection & Logic -->
+    <script>
+        // REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS FROM STEP 5
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+        let supabaseClient = null;
+        try {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) {
+            console.error("Supabase initialization error:", e);
+        }
+
+        // Simple placeholder interaction logic for interface preview
+        document.getElementById('login-btn').addEventListener('click', () => {
+            alert("Please make sure you have added your actual Supabase URL and Anon Key in the index.html script tags!");
+        });
+    </script>
+</body>
+</html>
